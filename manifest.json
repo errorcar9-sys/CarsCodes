@@ -1,27 +1,21 @@
 {
   "name": "بحث رموز الأعطال",
-  "short_name":  "رموز الأعطال",
+  "short_name": "رموز الأعطال",
   "description": "تطبيق للبحث عن رموز أعطال السيارات",
-  "start_url": "/student-tracker-pwa/",
+  "start_url": "./",
   "display": "standalone",
-  "background_color": "#f0f4f8",
-  "theme_color": "#4361ee",
-  "orientation": "portrait",
-  "lang": "ar",
-  "scope": "/student-tracker-pwa/",
-  "categories": ["education", "productivity"],
+  "background_color": "#f4f4f4",
+  "theme_color": "#2c3e50",
   "icons": [
     {
       "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     },
     {
       "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ]
 }
