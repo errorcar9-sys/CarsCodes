@@ -1,13 +1,20 @@
 <!doctype html>
 <html lang="ar">
 <head>
- <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-192.png">
-<meta name="theme-color" content="#2c3e50">
-<meta name="apple-mobile-web-app-capable" content="yes">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>بحث رموز الأعطال</title>
+  
+  <!-- PWA Meta Tags -->
+  <meta name="theme-color" content="#2c3e50">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="بحث رموز الأعطال">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  
+  <!-- Manifest for PWA -->
+  <link rel="manifest" href="manifest.json">
+  
   <style>
     * {
       box-sizing: border-box;
@@ -40,6 +47,24 @@
     .search-container {
       position: relative;
       margin-bottom: 15px;
+    }
+    
+    .search-options {
+      display: flex;
+      margin-bottom: 10px;
+      gap: 10px;
+    }
+    
+    .search-option {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+    }
+    
+    .search-option input {
+      width: auto;
+      margin-left: 5px;
     }
     
     input {
@@ -353,6 +378,38 @@
       color: #95a5a6;
     }
     
+    .install-banner {
+      background: #2c3e50;
+      color: white;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      display: none;
+      text-align: center;
+    }
+    
+    .install-btn {
+      background: #3498db;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+    
+    .install-btn:hover {
+      background: #2980b9;
+    }
+    
+    .search-stats {
+      font-size: 12px;
+      color: #7f8c8d;
+      margin-top: 5px;
+      text-align: center;
+    }
+    
     /* تحسينات للموبايل */
     @media (max-width: 480px) {
       body {
@@ -382,16 +439,39 @@
         left: 5px;
         right: 5px;
       }
+      
+      .search-options {
+        flex-direction: column;
+        gap: 5px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
+    <div class="install-banner" id="installBanner">
+      <p>ثبّت التطبيق على سطح المكتب للوصول السريع</p>
+      <button class="install-btn" id="installBtn">تثبيت التطبيق</button>
+    </div>
+    
     <h1>🔍 البحث عن رمز السيارة</h1>
+    
+    <div class="search-options">
+      <div class="search-option">
+        <input type="checkbox" id="exactMatch">
+        <label for="exactMatch">مطابقة تامة</label>
+      </div>
+      <div class="search-option">
+        <input type="checkbox" id="caseSensitive">
+        <label for="caseSensitive">حساسية لحالة الأحرف</label>
+      </div>
+    </div>
     
     <div class="search-container">
       <input type="text" id="searchBox" placeholder="ادخل الرمز مثل P0174" autocomplete="off">
     </div>
+    
+    <div class="search-stats" id="searchStats"></div>
     
     <div class="results-container" id="results"></div>
     
@@ -402,7 +482,7 @@
       <h3>📂 تحميل ملفات الرموز</h3>
       <p>للبحث عن رموز الأعطال، يرجى تحميل ملفات الرموز:</p>
       <div class="file-input-container">
-        <input type="file" id="fileInput" accept=".html,.htm" multiple>
+        <input type=file id="fileInput" accept=".html,.htm" multiple>
         <label for="fileInput" class="file-input-label">اختر ملفات الرموز</label>
       </div>
       
@@ -412,8 +492,8 @@
       
       <div class="storage-options">
         <div class="storage-option">
-          <input type="checkbox" id="saveFiles" checked>
-          <label for="saveFiles">حفظ الملفات للاستخدام المستقبلي</label>
+          <input type="checkbox" id="saveFiles" checked disabled>
+          <label for="saveFiles">حفظ الملفات للاستخدام المستقبلي (مفعل دائماً)</label>
         </div>
         <div class="storage-option">
           <input type="checkbox" id="compressFiles">
@@ -457,9 +537,9 @@
   </div>
 
   <script>
-    // ✏️ هنا تدخل الرموز واسم الملفات مباشرة
+      // ✏️ هنا تدخل الرموز واسم الملفات مباشرة
     const codes = [
-      { code: "P0001 ", file: "General-P_A.html" },
+{ code: "P0001 ", file: "General-P_A.html" },
 { code: "P0002 ", file: "General-P A.html" },
 { code: "P0003 ", file: "General-P A.html" },
 { code: "P0004 ", file: "General-P A.html" },
@@ -8838,14 +8918,1049 @@
 { code: "Kia B2599 ", file: "KIA-B B.html" },
 { code: "Kia B2800 ", file: "KIA-B B.html" },
 { code: "Kia B2860 ", file: "KIA-B B.html" },
-
-
-    ];
+{code: "Dodge P1004 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1005 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1009 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1105 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1106 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1109 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1110 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1111 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1112 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1115 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1118 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1128 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1129 ", file: "Dodge-P A.html" },
+{ code: "Dodge P112A ", file: "Dodge-P A.html" },
+{ code: "Dodge P112B ", file: "Dodge-P A.html" },
+{ code: "Dodge P112C ", file: "Dodge-P A.html" },
+{ code: "Dodge P112D ", file: "Dodge-P A.html" },
+{ code: "Dodge P112E ", file: "Dodge-P A.html" },
+{ code: "Dodge P112F ", file: "Dodge-P A.html" },
+{ code: "Dodge P1135 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1136 ", file: "Dodge-P A.html" },
+{ code: "Dodge P113D ", file: "Dodge-P A.html" },
+{ code: "Dodge P113E ", file: "Dodge-P A.html" },
+{ code: "Dodge P1166 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1187 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1188 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1189 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1190 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1192 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1193 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1195 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1196 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1197 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1205 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1206 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1217 ", file: "Dodge-P A.html" },
+{ code: "Dodge P121B ", file: "Dodge-P A.html" },
+{ code: "Dodge P1239 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1272 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1273 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1274 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1275 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1277 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1278 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1279 ", file: "Dodge-P A.html" },
+{ code: "Dodge P127A ", file: "Dodge-P A.html" },
+{ code: "Dodge P127C ", file: "Dodge-P A.html" },
+{ code: "Dodge P127D ", file: "Dodge-P A.html" },
+{ code: "Dodge P127E ", file: "Dodge-P A.html" },
+{ code: "Dodge P127F ", file: "Dodge-P A.html" },
+{ code: "Dodge P1281 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1282 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1283 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1284 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1285 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1286 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1287 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1288 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1289 ", file: "Dodge-P A.html" },
+{ code: "Dodge P128B ", file: "Dodge-P A.html" },
+{ code: "Dodge P128C ", file: "Dodge-P A.html" },
+{ code: "Dodge P128D ", file: "Dodge-P A.html" },
+{ code: "Dodge P128E ", file: "Dodge-P A.html" },
+{ code: "Dodge P1290 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1291 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1292 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1293 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1294 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1295 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1296 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1297 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1299 ", file: "Dodge-P A.html" },
+{ code: "Dodge P129C ", file: "Dodge-P A.html" },
+{ code: "Dodge P129E ", file: "Dodge-P A.html" },
+{ code: "Dodge P1300 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1372 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1388 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1389 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1390 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1391 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1398 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1400 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1404 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1411 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1414 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1416 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1417 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1456 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1457 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1462 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1463 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1475 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1478 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1480 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1481 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1486 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1487 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1488 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1489 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1490 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1491 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1492 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1493 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1494 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1495 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1496 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1497 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1498 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1499 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1500 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1501 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1502 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1504 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1505 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1506 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1507 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1508 ", file: "Dodge-P A.html" },
+{ code: "Dodge P150D ", file: "Dodge-P A.html" },
+{ code: "Dodge P1513 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1519 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1521 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1524 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1529 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1530 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1572 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1573 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1593 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1594 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1595 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1596 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1597 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1598 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1599 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1601 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1602 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1603 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1604 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1607 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1609 ", file: "Dodge-P A.html" },
+{ code: "Dodge P160A ", file: "Dodge-P A.html" },
+{ code: "Dodge P1610 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1611 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1614 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1616 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1617 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1618 ", file: "Dodge-P A.html" },
+{ code: "Dodge P161A ", file: "Dodge-P A.html" },
+{ code: "Dodge P161B ", file: "Dodge-P A.html" },
+{ code: "Dodge P1620 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1621 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1622 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1626 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1627 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1628 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1629 ", file: "Dodge-P A.html" },
+{ code: "Dodge P162A ", file: "Dodge-P A.html" },
+{ code: "Dodge P162B ", file: "Dodge-P A.html" },
+{ code: "Dodge P162C ", file: "Dodge-P A.html" },
+{ code: "Dodge P1631 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1632 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1633 ", file: "Dodge-P A.html" },
+{ code: "Dodge P1634 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1636 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1637 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1638 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1639 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1643 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1644 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1645 ", file: "Dodge-P B.html" },
+{ code: "Dodge P164A ", file: "Dodge-P B.html" },
+{ code: "Dodge P164B ", file: "Dodge-P B.html" },
+{ code: "Dodge P1652 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1653 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1654 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1656 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1661 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1665 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1666 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1678 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1679 ", file: "Dodge-P B.html" },
+{ code: "Dodge P167A ", file: "Dodge-P B.html" },
+{ code: "Dodge P1681 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1682 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1683 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1684 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1685 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1686 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1687 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1688 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1689 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1690 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1691 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1692 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1693 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1694 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1695 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1696 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1697 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1698 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1702 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1704 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1705 ", file: "Dodge-P B.html" },
+{ code: "Dodge P170A ", file: "Dodge-P B.html" },
+{ code: "Dodge P170B ", file: "Dodge-P B.html" },
+{ code: "Dodge P170C ", file: "Dodge-P B.html" },
+{ code: "Dodge P170D ", file: "Dodge-P B.html" },
+{ code: "Dodge P1713 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1714 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1715 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1716 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1717 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1718 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1719 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1723 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1729 ", file: "Dodge-P B.html" },
+{ code: "Dodge P172A ", file: "Dodge-P B.html" },
+{ code: "Dodge P1731 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1736 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1738 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1739 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1740 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1741 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1745 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1751 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1756 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1757 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1762 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1763 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1764 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1765 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1767 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1768 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1771 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1775 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1776 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1781 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1782 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1784 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1787 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1788 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1789 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1790 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1791 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1792 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1793 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1794 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1795 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1796 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1797 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1798 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1799 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1854 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1897 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1899 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1915 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1B13 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1B14 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1C4E ", file: "Dodge-P B.html" },
+{ code: "Dodge P1CF3 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1CF4 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D20 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D25 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D77 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D78 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D79 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D83 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D8A ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D8B ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D8C ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D8D ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D8E ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D8F ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D90 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D91 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D92 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D93 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D94 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D95 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D96 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D97 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D98 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D99 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D9A ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D9B ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D9C ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D9D ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D9E ", file: "Dodge-P B.html" },
+{ code: "Dodge P1D9F ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DA0 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DA1 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DA2 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DA3 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DA4 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DA5 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DA6 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DA7 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DA8 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DA9 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DAA ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DAB ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DAC ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DAD ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DAE ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DAF ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DB0 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DB1 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DB2 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DB3 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DB4 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DB5 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DB6 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DB7 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DB8 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DB9 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DC6 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DC7 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DC8 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DC9 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DCA ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DCD ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DCE ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DCF ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DD0 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DD1 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DD2 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DDC ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DDD ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DDE ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DEB ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DF3 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DF7 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DF8 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DF9 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1DFA ", file: "Dodge-P B.html" },
+{ code: "Dodge P1E09 ", file: "Dodge-P B.html" },
+{ code: "Dodge P1E0A ", file: "Dodge-P B.html" },
+{ code: "Dodge P3032 ", file: "Dodge-P B.html" },
+{ code: "Jeep P1004 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1005 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1009 ", file: "Jeep-p A.html" },
+{ code: "Jeep P101A ", file: "Jeep-p A.html" },
+{ code: "Jeep P101B ", file: "Jeep-p A.html" },
+{ code: "Jeep P101C ", file: "Jeep-p A.html" },
+{ code: "Jeep P101D ", file: "Jeep-p A.html" },
+{ code: "Jeep P1021 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1022 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1023 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1024 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1025 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1026 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1027 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1028 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1029 ", file: "Jeep-p A.html" },
+{ code: "Jeep P102A ", file: "Jeep-p A.html" },
+{ code: "Jeep P102B ", file: "Jeep-p A.html" },
+{ code: "Jeep P102C ", file: "Jeep-p A.html" },
+{ code: "Jeep P1031 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1032 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1033 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1034 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1035 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1036 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1037 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1038 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1039 ", file: "Jeep-p A.html" },
+{ code: "Jeep P103A ", file: "Jeep-p A.html" },
+{ code: "Jeep P103B ", file: "Jeep-p A.html" },
+{ code: "Jeep P103C ", file: "Jeep-p A.html" },
+{ code: "Jeep P103D ", file: "Jeep-p A.html" },
+{ code: "Jeep P103E ", file: "Jeep-p A.html" },
+{ code: "Jeep P103F ", file: "Jeep-p A.html" },
+{ code: "Jeep P1040 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1041 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1042 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1043 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1044 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1045 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1046 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1047 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1048 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1049 ", file: "Jeep-p A.html" },
+{ code: "Jeep P104A ", file: "Jeep-p A.html" },
+{ code: "Jeep P104B ", file: "Jeep-p A.html" },
+{ code: "Jeep P104C ", file: "Jeep-p A.html" },
+{ code: "Jeep P1050 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1051 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1052 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1053 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1054 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1055 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1056 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1057 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1058 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1059 ", file: "Jeep-p A.html" },
+{ code: "Jeep P105A ", file: "Jeep-p A.html" },
+{ code: "Jeep P105B ", file: "Jeep-p A.html" },
+{ code: "Jeep P105C ", file: "Jeep-p A.html" },
+{ code: "Jeep P105D ", file: "Jeep-p A.html" },
+{ code: "Jeep P1061 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1062 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1063 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1064 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1065 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1066 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1067 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1068 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1069 ", file: "Jeep-p A.html" },
+{ code: "Jeep P106A ", file: "Jeep-p A.html" },
+{ code: "Jeep P106B ", file: "Jeep-p A.html" },
+{ code: "Jeep P106C ", file: "Jeep-p A.html" },
+{ code: "Jeep P1070 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1071 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1072 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1073 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1101 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1102 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1115 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1128 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1129 ", file: "Jeep-p A.html" },
+{ code: "Jeep P112A ", file: "Jeep-p A.html" },
+{ code: "Jeep P112B ", file: "Jeep-p A.html" },
+{ code: "Jeep P112C ", file: "Jeep-p A.html" },
+{ code: "Jeep P112D ", file: "Jeep-p A.html" },
+{ code: "Jeep P112E ", file: "Jeep-p A.html" },
+{ code: "Jeep P112F ", file: "Jeep-p A.html" },
+{ code: "Jeep P1131 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1132 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1135 ", file: "Jeep-p A.html" },
+{ code: "Jeep P113D ", file: "Jeep-p A.html" },
+{ code: "Jeep P113E ", file: "Jeep-p A.html" },
+{ code: "Jeep P1140 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1142 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1155 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1159 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1160 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1167 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1168 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1169 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1170 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1171 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1172 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1173 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1185 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1191 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1192 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1193 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1195 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1196 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1197 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1200 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1205 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1206 ", file: "Jeep-p A.html" },
+{ code: "Jeep P120A ", file: "Jeep-p A.html" },
+{ code: "Jeep P120B ", file: "Jeep-p A.html" },
+{ code: "Jeep P1212 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1220 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1221 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1222 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1239 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1250 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1251 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1252 ", file: "Jeep-p A.html" },
+{ code: "Jeep P125D ", file: "Jeep-p A.html" },
+{ code: "Jeep P1270 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1273 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1275 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1277 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1278 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1279 ", file: "Jeep-p A.html" },
+{ code: "Jeep P127A ", file: "Jeep-p A.html" },
+{ code: "Jeep P127C ", file: "Jeep-p A.html" },
+{ code: "Jeep P127D ", file: "Jeep-p A.html" },
+{ code: "Jeep P127E ", file: "Jeep-p A.html" },
+{ code: "Jeep P127F ", file: "Jeep-p A.html" },
+{ code: "Jeep P1281 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1282 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1286 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1287 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1288 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1289 ", file: "Jeep-p A.html" },
+{ code: "Jeep P128B ", file: "Jeep-p A.html" },
+{ code: "Jeep P128C ", file: "Jeep-p A.html" },
+{ code: "Jeep P128D ", file: "Jeep-p A.html" },
+{ code: "Jeep P128E ", file: "Jeep-p A.html" },
+{ code: "Jeep P1294 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1296 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1297 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1299 ", file: "Jeep-p A.html" },
+{ code: "Jeep P129C ", file: "Jeep-p A.html" },
+{ code: "Jeep P129E ", file: "Jeep-p A.html" },
+{ code: "Jeep P1300 ", file: "Jeep-p A.html" },
+{ code: "Jeep P130A ", file: "Jeep-p A.html" },
+{ code: "Jeep P1388 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1389 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1390 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1391 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1398 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1400 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1404 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1411 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1414 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1416 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1417 ", file: "Jeep-p A.html" },
+{ code: "Jeep P141B ", file: "Jeep-p A.html" },
+{ code: "Jeep P141C ", file: "Jeep-p A.html" },
+{ code: "Jeep P141D ", file: "Jeep-p A.html" },
+{ code: "Jeep P1452 ", file: "Jeep-p A.html" },
+{ code: "Jeep P1453 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1454 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1456 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1457 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1480 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1481 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1486 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1487 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1488 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1489 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1490 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1491 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1492 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1493 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1494 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1495 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1496 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1498 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1499 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1500 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1501 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1502 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1506 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1507 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1508 ", file: "Jeep-p B.html" },
+{ code: "Jeep P150D ", file: "Jeep-p B.html" },
+{ code: "Jeep P1513 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1515 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1518 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1521 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1523 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1524 ", file: "Jeep-p B.html" },
+{ code: "Jeep P152A ", file: "Jeep-p B.html" },
+{ code: "Jeep P152C ", file: "Jeep-p B.html" },
+{ code: "Jeep P152D ", file: "Jeep-p B.html" },
+{ code: "Jeep P152E ", file: "Jeep-p B.html" },
+{ code: "Jeep P152F ", file: "Jeep-p B.html" },
+{ code: "Jeep P1572 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1573 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1593 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1594 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1595 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1596 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1597 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1598 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1599 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1601 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1602 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1603 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1604 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1607 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1609 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1610 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1611 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1614 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1616 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1617 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1618 ", file: "Jeep-p B.html" },
+{ code: "Jeep P161B ", file: "Jeep-p B.html" },
+{ code: "Jeep P1620 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1621 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1622 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1627 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1628 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1629 ", file: "Jeep-p B.html" },
+{ code: "Jeep P162A ", file: "Jeep-p B.html" },
+{ code: "Jeep P162B ", file: "Jeep-p B.html" },
+{ code: "Jeep P162C ", file: "Jeep-p B.html" },
+{ code: "Jeep P1631 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1632 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1633 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1634 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1636 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1637 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1638 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1639 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1643 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1644 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1645 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1648 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1649 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1652 ", file: "Jeep-p B.html" },
+{ code: "Jeep P165B ", file: "Jeep-p B.html" },
+{ code: "Jeep P1660 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1661 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1665 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1666 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1679 ", file: "Jeep-p B.html" },
+{ code: "Jeep P167A ", file: "Jeep-p B.html" },
+{ code: "Jeep P1682 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1683 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1684 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1685 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1686 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1687 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1688 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1689 ", file: "Jeep-p B.html" },
+{ code: "Jeep P168A ", file: "Jeep-p B.html" },
+{ code: "Jeep P1690 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1691 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1692 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1693 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1694 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1695 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1696 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1697 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1698 ", file: "Jeep-p B.html" },
+{ code: "Jeep P16A0 ", file: "Jeep-p B.html" },
+{ code: "Jeep P16A1 ", file: "Jeep-p B.html" },
+{ code: "Jeep P16A2 ", file: "Jeep-p B.html" },
+{ code: "Jeep P16A3 ", file: "Jeep-p B.html" },
+{ code: "Jeep P16A4 ", file: "Jeep-p B.html" },
+{ code: "Jeep P16A5 ", file: "Jeep-p B.html" },
+{ code: "Jeep P16AA ", file: "Jeep-p B.html" },
+{ code: "Jeep P16AB ", file: "Jeep-p B.html" },
+{ code: "Jeep P16F0 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1702 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1703 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1704 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1705 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1713 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1715 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1716 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1717 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1718 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1719 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1720 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1723 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1725 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1726 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1727 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1728 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1729 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1731 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1732 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1733 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1734 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1735 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1736 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1738 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1739 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1740 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1742 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1743 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1744 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1745 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1746 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1747 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1748 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1749 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1756 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1757 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1762 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1763 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1764 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1765 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1767 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1768 ", file: "Jeep-p B.html" },
+{ code: "Jeep P176D ", file: "Jeep-p B.html" },
+{ code: "Jeep P1775 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1776 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1781 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1782 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1784 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1788 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1789 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1790 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1791 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1792 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1793 ", file: "Jeep-p B.html" },
+{ code: "Jeep P1794 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1795 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1796 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1797 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1798 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1799 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1830 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1861 ", file: "Jeep-p C.html" },
+{ code: "Jeep P186F ", file: "Jeep-p C.html" },
+{ code: "Jeep P1897 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1899 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1915 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1946 ", file: "Jeep-p C.html" },
+{ code: "Jeep P198A ", file: "Jeep-p C.html" },
+{ code: "Jeep P1B13 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1B14 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1C4E ", file: "Jeep-p C.html" },
+{ code: "Jeep P1C57 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1C73 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1C82 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1C8C ", file: "Jeep-p C.html" },
+{ code: "Jeep P1C97 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1C98 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1C99 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1C9B ", file: "Jeep-p C.html" },
+{ code: "Jeep P1C9C ", file: "Jeep-p C.html" },
+{ code: "Jeep P1C9D ", file: "Jeep-p C.html" },
+{ code: "Jeep P1C9F ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CA0 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CA1 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CA3 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CA4 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CA5 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CA7 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CA8 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CA9 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CAA ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CAB ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CAC ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CAD ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CAE ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CAF ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CB0 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CB1 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CB2 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CB3 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CB4 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CB6 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CBD ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CBE ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CBF ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CC0 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CC1 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CC2 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CC3 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CC4 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CC7 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CC8 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CC9 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CCA ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CCB ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CCD ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CCE ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CEA ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CEC ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CED ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CF3 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1CF4 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D20 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D25 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D30 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D32 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D33 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D34 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D59 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D5A ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D5B ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D5C ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D5D ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D5E ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D5F ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D60 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D61 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D65 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D66 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D67 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D68 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D6A ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D6B ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D6C ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D73 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D74 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D75 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D76 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D77 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D78 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D79 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D7F ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D80 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D81 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D82 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D83 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D8A ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D8B ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D8C ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D8D ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D8E ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D8F ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D90 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D91 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D92 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D93 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D94 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D95 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D96 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D97 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D98 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D99 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D9A ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D9B ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D9C ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D9D ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D9E ", file: "Jeep-p C.html" },
+{ code: "Jeep P1D9F ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DA0 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DA1 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DA2 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DA3 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DA4 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DA5 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DA6 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DA7 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DA8 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DA9 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DAA ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DAB ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DAC ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DAD ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DAE ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DAF ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DB0 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DB1 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DB2 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DB3 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DB6 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DB7 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DB8 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DB9 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DC6 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DC7 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DC8 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DC9 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DCA ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DCD ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DCE ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DCF ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DD0 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DD1 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DD2 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DDC ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DDD ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DDE ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DEB ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DF3 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DF7 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DF8 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DF9 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1DFA ", file: "Jeep-p C.html" },
+{ code: "Jeep P1E08 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1E09 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1E0A ", file: "Jeep-p C.html" },
+{ code: "Jeep P1E0C ", file: "Jeep-p C.html" },
+{ code: "Jeep P1E23 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1E26 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1E27 ", file: "Jeep-p C.html" },
+{ code: "Jeep P1E28 ", file: "Jeep-p C.html" },
+{ code: "Jeep P3032 ", file: "Jeep-p C.html" },
+{ code: "Nissan B1017 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1018 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1019 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1020 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1021 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1022 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1023 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1033 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1034 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1035 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1049 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1050 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1051 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1052 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1054 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1055 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1056 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1057 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1065 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1066 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1067 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1068 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1070 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1071 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1072 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1073 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1081 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1082 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1083 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1084 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1086 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1087 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1088 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1089 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1113 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1114 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1115 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1118 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1119 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1120 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1129 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1130 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1131 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1132 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1134 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1135 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1136 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1137 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1145 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1146 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1147 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1148 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1150 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1151 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1152 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1153 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1177 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1178 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1179 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1180 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1193 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1194 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1195 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1196 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1198 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1199 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1200 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1201 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1209 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1210 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B1211", file: "NISSAN-B A.html" },
+{ code: "Nissan B2013 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2014 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2098 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2099 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2108 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2109 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B210A ", file: "NISSAN-B A.html" },
+{ code: "Nissan B210B ", file: "NISSAN-B A.html" },
+{ code: "Nissan B210C ", file: "NISSAN-B A.html" },
+{ code: "Nissan B210D ", file: "NISSAN-B A.html" },
+{ code: "Nissan B210E ", file: "NISSAN-B A.html" },
+{ code: "Nissan B210F ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2110 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2190 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2191 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2192 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2193 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2194 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2195 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2205 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2552 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2553 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2555 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2556 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2557 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2560 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2562 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2563 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2578 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2579 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B257B ", file: "NISSAN-B A.html" },
+{ code: "Nissan B257C ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2581 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2582 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2590 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2601 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2602 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2603 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2604 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2605 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2606 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2607 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2608 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2609 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B260A ", file: "NISSAN-B A.html" },
+{ code: "Nissan B260B ", file: "NISSAN-B A.html" },
+{ code: "Nissan B260C ", file: "NISSAN-B A.html" },
+{ code: "Nissan B260D ", file: "NISSAN-B A.html" },
+{ code: "Nissan B260F ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2612 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2617 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2619 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B261A ", file: "NISSAN-B A.html" },
+{ code: "Nissan B261E ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2621 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2622 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2623 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2630 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2631 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2632 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2633 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2634 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2635 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2636 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2637 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2638 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2639 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B263D ", file: "NISSAN-B A.html" },
+{ code: "Nissan B263E ", file: "NISSAN-B A.html" },
+{ code: "Nissan B263F ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2640 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2641 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2642 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2643 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2644 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2645 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2646 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2647 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2648 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2649 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B264A ", file: "NISSAN-B A.html" },
+{ code: "Nissan B264C ", file: "NISSAN-B A.html" },
+{ code: "Nissan B264D ", file: "NISSAN-B A.html" },
+{ code: "Nissan B264E ", file: "NISSAN-B A.html" },
+{ code: "Nissan B264F ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2651 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2652 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2653 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2654 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2655 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2656 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B26E8 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B26E9 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B26EA ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2700 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2701 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2702 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2703 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2704 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2705 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2706 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2707 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2708 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2709 ", file: "NISSAN-B A.html" },
+{ code: "Nissan B270A ", file: "NISSAN-B A.html" },
+{ code: "Nissan B270B ", file: "NISSAN-B A.html" },
+{ code: "Nissan B270C ", file: "NISSAN-B A.html" },
+{ code: "Nissan B270D ", file: "NISSAN-B A.html" },
+{ code: "Nissan B270E ", file: "NISSAN-B A.html" },
+{ code: "Nissan B270F ", file: "NISSAN-B A.html" },
+{ code: "Nissan B2878 ", file: "NISSAN-B A.html" },
+];
 
     // كائن لتخزين محتوى الملفات المحملة
     let loadedFiles = {};
     let currentZoom = 1;
     let db = null; // مرجع لقاعدة البيانات
+    let deferredPrompt = null; // لتخزين حدث التثبيت
     
     const searchBox = document.getElementById("searchBox");
     const resultsContainer = document.getElementById("results");
@@ -8862,6 +9977,54 @@
     const progressBar = document.getElementById("progressBar");
     const storageStatus = document.getElementById("storageStatus");
     const storageInfo = document.getElementById("storageInfo");
+    const installBanner = document.getElementById("installBanner");
+    const installBtn = document.getElementById("installBtn");
+    const exactMatchCheckbox = document.getElementById("exactMatch");
+    const caseSensitiveCheckbox = document.getElementById("caseSensitive");
+    const searchStats = document.getElementById("searchStats");
+
+    // تهيئة PWA
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // منع المتصفح من إظهار النافذة الافتراضية
+      e.preventDefault();
+      // تخزين الحدث لاستخدامه لاحقاً
+      deferredPrompt = e;
+      // إظهار بانر التثبيت
+      installBanner.style.display = 'block';
+    });
+
+    // معالجة زر التثبيت
+    installBtn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        // إظهار نافذة التثبيت
+        deferredPrompt.prompt();
+        // انتظار اختيار المستخدم
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`User response to the install prompt: ${outcome}`);
+        // إخفاء البانر بعد التثبيت
+        installBanner.style.display = 'none';
+        deferredPrompt = null;
+      }
+    });
+
+    // إخفاء بانر التثبيت إذا تم تثبيت التطبيق
+    window.addEventListener('appinstalled', () => {
+      installBanner.style.display = 'none';
+      showSuccessMessage('تم تثبيت التطبيق بنجاح');
+    });
+
+    // تسجيل Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(registration => {
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+          })
+          .catch(error => {
+            console.log('ServiceWorker registration failed: ', error);
+          });
+      });
+    }
 
     // تهيئة قاعدة البيانات
     function initDB() {
@@ -8946,29 +10109,6 @@
         
         request.onerror = function() {
           reject('فشل تحميل الملف من قاعدة البيانات');
-        };
-      });
-    }
-
-    // دالة لحذف ملف من قاعدة البيانات
-    function deleteFileFromDB(fileName) {
-      return new Promise((resolve, reject) => {
-        if (!db) {
-          reject('قاعدة البيانات غير مهيأة');
-          return;
-        }
-        
-        const transaction = db.transaction(['files'], 'readwrite');
-        const objectStore = transaction.objectStore('files');
-        
-        const request = objectStore.delete(fileName);
-        
-        request.onsuccess = function() {
-          resolve();
-        };
-        
-        request.onerror = function() {
-          reject('فشل حذف الملف من قاعدة البيانات');
         };
       });
     }
@@ -9060,13 +10200,6 @@
       });
     };
 
-    // حفظ البيانات عند إغلاق الصفحة
-    window.addEventListener('beforeunload', function() {
-      if (saveFilesCheckbox.checked && Object.keys(loadedFiles).length > 0) {
-        saveFilesToStorage();
-      }
-    });
-
     // دالة لتحديث حالة التخزين
     async function updateStorageStatus() {
       try {
@@ -9077,13 +10210,13 @@
         
         const used = await getStorageUsed();
         const usedMB = (used / (1024 * 1024)).toFixed(2);
-        const available = (150 - usedMB).toFixed(2); // حد 150MB
+        const available = (250 - usedMB).toFixed(2); // تم زيادة الحد إلى 250MB
         
         storageStatus.textContent = `مساحة التخزين المستخدمة: ${usedMB}MB, المتاحة: ${available}MB`;
         
         // الحصول على عدد الملفات
         const files = await getAllFilesFromDB();
-        storageInfo.textContent = `عدد الملفات: ${files.length} | الحد الأقصى: 150MB`;
+        storageInfo.textContent = `عدد الملفات: ${files.length} | الحد الأقصى: 250MB`;
         
         if (available < 10) {
           storageStatus.style.color = '#e74c3c';
@@ -9138,22 +10271,9 @@
       }
     }
 
-    // دالة لضغط النص قبل التخزين
-    function compressText(text) {
-      // تقنية بسيطة لضغط النص عن طريق إزالة المسافات الزائدة
-      return text.replace(/\s+/g, ' ').trim();
-    }
-
-    // دالة لفك ضغط النص
-    function decompressText(compressedText) {
-      // استعادة النص الأصلي (في هذه الحالة، لا نحتاج لفعل شيء)
-      return compressedText;
-    }
-
-    // دالة لحفظ الملفات
+    // دالة لحفظ الملفات - تعديل لجعل الحفظ دائماً
     async function saveFilesToStorage() {
-      if (!saveFilesCheckbox.checked) return true;
-      
+      // تم إزالة الشرط لأن الحفظ دائماً مفعل
       try {
         if (!db) {
           showError('قاعدة البيانات غير مهيأة');
@@ -9163,25 +10283,20 @@
         // حساب حجم البيانات
         let totalSize = 0;
         for (const fileName in loadedFiles) {
-          const content = compressFilesCheckbox.checked ? 
-            compressText(loadedFiles[fileName]) : 
-            loadedFiles[fileName];
+          const content = loadedFiles[fileName];
           totalSize += content.length;
         }
         
-        // التحقق من الحجم
-        const maxSize = 150 * 1024 * 1024; // 150MB
+        // التحقق من الحجم - تم زيادة الحد إلى 250MB
+        const maxSize = 250 * 1024 * 1024; // 250MB
         if (totalSize > maxSize) {
-          showError(`حجم البيانات كبير جدًا للتخزين (${(totalSize / (1024*1024)).toFixed(2)}MB). الحد الأقصى هو 150MB.`);
+          showError(`حجم البيانات كبير جدًا للتخزين (${(totalSize / (1024*1024)).toFixed(2)}MB). الحد الأقصى هو 250MB.`);
           return false;
         }
         
         // حفظ كل ملف في قاعدة البيانات
         for (const fileName in loadedFiles) {
-          const content = compressFilesCheckbox.checked ? 
-            compressText(loadedFiles[fileName]) : 
-            loadedFiles[fileName];
-          
+          const content = loadedFiles[fileName];
           await saveFileToDB(fileName, content);
         }
         
@@ -9243,11 +10358,11 @@
           // تحديث قائمة الملفات المحملة
           updateLoadedFilesList();
           
-          // حفظ الملفات إذا كان الخيار مفعلاً
+          // حفظ الملفات دائماً (تم تعديل هذا الجزء)
           if (loadedCount === files.length) {
             setTimeout(async () => {
               if (await saveFilesToStorage()) {
-                showSuccessMessage(`تم تحميل ${files.length} ملفات بنجاح`);
+                showSuccessMessage(`تم تحميل ${files.length} ملفات بنجاح وحفظها تلقائياً`);
               }
               progressContainer.style.display = 'none';
             }, 500);
@@ -9288,11 +10403,11 @@
                 // تحديث قائمة الملفات المحملة
                 updateLoadedFilesList();
                 
-                // حفظ الملفات إذا كان الخيار مفعلاً
+                // حفظ الملفات دائماً (تم تعديل هذا الجزء)
                 if (loadedCount === files.length) {
                   setTimeout(async () => {
                     if (await saveFilesToStorage()) {
-                      showSuccessMessage(`تم تحميل ${files.length} ملفات بنجاح`);
+                      showSuccessMessage(`تم تحميل ${files.length} ملفات بنجاح وحفظها تلقائياً`);
                     }
                     progressContainer.style.display = 'none';
                   }, 500);
@@ -9327,14 +10442,16 @@
       }
     }
 
-    // دالة البحث الرئيسية - محسّنة للأداء
+    // دالة البحث الرئيسية - محسّنة للأداء والدقة
     let searchTimeout;
     function performSearch() {
       // استخدام debounce لتحسين الأداء
       clearTimeout(searchTimeout);
       
       searchTimeout = setTimeout(() => {
-        const query = searchBox.value.trim().toUpperCase();
+        const query = searchBox.value.trim();
+        const exactMatch = exactMatchCheckbox.checked;
+        const caseSensitive = caseSensitiveCheckbox.checked;
         
         // إخفاء الرسائل السابقة
         errorMessage.style.display = "none";
@@ -9342,6 +10459,7 @@
         
         if (!query) {
           resultsContainer.innerHTML = "";
+          searchStats.textContent = "";
           return;
         }
         
@@ -9352,16 +10470,44 @@
               🚫 يرجى تحميل ملفات الرموز أولاً
             </div>
           `;
+          searchStats.textContent = "";
           return;
         }
         
         try {
           // استخدام requestAnimationFrame لتحسين الأداء
           requestAnimationFrame(() => {
+            // تحضير نص البحث
+            let searchQuery = query;
+            if (!caseSensitive) {
+              searchQuery = searchQuery.toUpperCase();
+            }
+            
             // البحث عن الرموز المطابقة
-            const found = codes.filter(item => 
-              item.code.toUpperCase().includes(query) && loadedFiles[item.file]
-            );
+            let found = [];
+            
+            if (exactMatch) {
+              // البحث بالمطابقة التامة
+              found = codes.filter(item => {
+                let itemCode = item.code;
+                if (!caseSensitive) {
+                  itemCode = itemCode.toUpperCase();
+                }
+                return itemCode === searchQuery && loadedFiles[item.file];
+              });
+            } else {
+              // البحث بالمطابقة الجزئية
+              found = codes.filter(item => {
+                let itemCode = item.code;
+                if (!caseSensitive) {
+                  itemCode = itemCode.toUpperCase();
+                }
+                return itemCode.includes(searchQuery) && loadedFiles[item.file];
+              });
+            }
+            
+            // عرض إحصائيات البحث
+            searchStats.textContent = `تم العثور على ${found.length} نتيجة لـ "${query}"`;
             
             if (found.length === 0) {
               resultsContainer.innerHTML = `
@@ -9541,6 +10687,8 @@
 
     // إضافة مستمعي الأحداث
     searchBox.addEventListener('input', performSearch);
+    exactMatchCheckbox.addEventListener('change', performSearch);
+    caseSensitiveCheckbox.addEventListener('change', performSearch);
     
     // منع الإغلاق عند النقر خارج العارض
     fileViewer.addEventListener('click', function(e) {
@@ -9558,30 +10706,12 @@
       }
     });
     
-    // إضافة مستمع لحدث تغيير خيار الحفظ
-    saveFilesCheckbox.addEventListener('change', async function() {
-      if (saveFilesCheckbox.checked) {
-        await saveFilesToStorage();
-        showSuccessMessage('تم تفعيل حفظ الملفات');
-      } else {
-        showSuccessMessage('تم إيقاف حفظ الملفات');
-      }
+    // تعديل مستمع خيار الحفظ لجعله غير قابل للتغيير
+    saveFilesCheckbox.addEventListener('change', function() {
+      // منع تغيير الحالة دائماً
+      this.checked = true;
+      showSuccessMessage('حفظ الملفات مفعّل دائماً');
     });
   </script>
-  <script>
-  // تسجيل Service Worker
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js')
-        .then(registration => {
-          console.log('ServiceWorker registration successful');
-        })
-        .catch(error => {
-          console.log('ServiceWorker registration failed: ', error);
-        });
-    });
-  }
-</script>
 </body>
-
 </html>
